@@ -22,7 +22,8 @@
 #define led_falha_de_envio   15
 #define bt_power             12
 #define bt_emergencia        13
-#define bt_3                 14
+#define bt_3                 14                                               //Ainda não usado
+#define Threshold 40                                                          //Greater the value, more the sensitivity */
 
 //--------------------------------------------------------------------------------------------
 
@@ -33,13 +34,13 @@ uint8_t broadcastAddress[] = {0x24, 0x0A, 0xC4, 0xC6, 0x36, 0xA0};            //
 //Estrutura de dados
 typedef struct struct_message {
   
-  int bpm;
-  int spo2;
-  int vBat;
+  int   bpm;
+  int   spo2;
+  int   vBat;
   float acx;
   float acy;
   float acz;
-  int tmp;
+  int   tmp;
     
 } struct_message;
 struct_message myData;
@@ -178,6 +179,7 @@ void setup() {
 
   pinMode(led_funcionamento,  OUTPUT);
   pinMode(led_falha_de_envio, OUTPUT);
+  touchAttachInterrupt(bt_power, callback, Threshold);
 
   //Registrando as Tarefas-------------------------
     xTaskCreate(
@@ -274,4 +276,8 @@ void initial_config (){
   int adcRange = 4096;            //Options: 2048, 4096, 8192, 16384
 
   particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); //Configure sensor with these settings
+}
+
+void callback(){
+  //placeholder callback function
 }
